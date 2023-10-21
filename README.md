@@ -14,5 +14,5 @@ Assignments :
 Outputs :
 1. [Solution for Module-2](https://yonasbekele.github.io/Week2/)
 2. [Solution for Module-3](https://yonasbekele.github.io/week3/)
-3. [Solution for Module-4](https://yonasbekele.github.io/Week4/)
+3. [Solution for Module-4](https://yonasbekele.github.io/week4/)
 4. [Solution for Module-5](https://yonasbekele.github.io/Week5/)
