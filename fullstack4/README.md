@@ -3,7 +3,7 @@
 Coursera-HTML-CSS-and-Javascript-for-Web-Developers
 This repository contains all of the source code used in the course called HTML, CSS and Javascript for Web Developers in Coursera.
 
-Assignments :
+Assignments:
 
 1. [Module-2](https://github.com/jhu-ep-coursera/fullstack-course4/blob/master/assignments/assignment2/Assignment-2.md)
 2. [Module-3](https://github.com/jhu-ep-coursera/fullstack-course4/blob/master/assignments/assignment3/Assignment-3.md)
