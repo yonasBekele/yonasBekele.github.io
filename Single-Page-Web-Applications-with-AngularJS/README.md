@@ -13,8 +13,8 @@ Assignments :
 
 
 Outputs :
-1. [Solution for Module-1](https://yonasbekele.github.io/Week1/)
-2. [Solution for Module-2](https://yonasbekele.github.io/Week2/)
-3. [Solution for Module-3](https://yonasbekele.github.io/week3/)
-4. [Solution for Module-4](https://yonasbekele.github.io/week4/)
-5. [Solution for Module-5](https://yonasbekele.github.io/week5/)
+1. [Solution for Module-1](https://yonasbekele.github.io/Single-Page-Web-Applications-with-AngularJS/Module1/#!/)
+2. [Solution for Module-2](https://yonasbekele.github.io/Single-Page-Web-Applications-with-AngularJS/Module2/#!/)
+3. [Solution for Module-3](https://yonasbekele.github.io/Single-Page-Web-Applications-with-AngularJS/Module3/#!/)
+4. [Solution for Module-4](https://yonasbekele.github.io/Single-Page-Web-Applications-with-AngularJS/Module4/#!/)
+5. [Solution for Module-5](https://yonasbekele.github.io/Single-Page-Web-Applications-with-AngularJS/Module5/#!/)
