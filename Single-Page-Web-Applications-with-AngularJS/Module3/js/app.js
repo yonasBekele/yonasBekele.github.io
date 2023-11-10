@@ -1,74 +1,92 @@
-(function() {
+(function () {
     'use strict';
-
+  
     angular.module('NarrowItDownApp', [])
-        .controller('NarrowItDownController', NarrowItDownController)
-        .service('MenuSearchService', MenuSearchService)
-        .constant('ApiBasePath', "https://davids-restaurant.herokuapp.com")
-        .directive('foundItems', FoundItems);
-
-    function FoundItems() {
-        var ddo = {
-            restrict: 'E',
-            templateUrl: 'loader/itemsloaderindicator.template.html',
-            scope: {
-                foundItems: '<',
-                onEmpty: '<',
-                onRemove: '&'
-            },
-            controller: NarrowItDownController,
-            controllerAs: 'menu',
-            bindToController: true
-        };
-
-        return ddo;
+      .controller('NarrowItDownController', NarrowItDownController)
+      .service('MenuSearchService', MenuSearchService)
+      .directive('foundItems', FoundItemsDirective);
+  
+    function FoundItemsDirective() {
+      let ddo = {
+        scope: {
+          titles: "<",
+          found: "<",
+          remove: "&"
+        },
+        templateUrl: "foundItems.html",
+        controller: FoundItemsDirectiveController,
+        controllerAs: "founds",
+        bindToController: true
+      };
+      return ddo;
     }
-
+  
+    function FoundItemsDirectiveController() {
+      let founds = this;
+      founds.isDataComing = function () {
+        return founds.found.length > 0;
+      };
+    }
+  
     NarrowItDownController.$inject = ['MenuSearchService'];
-
     function NarrowItDownController(MenuSearchService) {
-        var menu = this;
-        menu.shortName = '';
+      let narrow = this;
+      narrow.found = [];
+      narrow.titles = {
+        name: "NAME",
+        description: "DESCRIPTION",
+        short_name: "SHORT NAME"
+      };
+  
+      narrow.removeMenuItem = function (index) {
+        MenuSearchService.removeItem(index);
+      };
+  
+      narrow.getItems = function (searchMenu) {
+        let promise = MenuSearchService.getMatchedMenuItems(searchMenu);
+        promise.then(function (items) {
+          narrow.found = items;
+          narrow.searched = narrow.found.length === 0;
+        }).catch(function (error) {
+          console.log(error);
+        });
+      };
+    }
+  
+    MenuSearchService.$inject = ['$http'];
+    function MenuSearchService($http) {
+      let menu = this;
+      menu.items = [];
+  
+      menu.getMatchedMenuItems = function (searchMenu) {
+        return $http({
+          method: "GET",
+          url: "https://coursera-jhu-default-rtdb.firebaseio.com/menu_items.json",
+          params: {}
+        }).then(function (result) {
+          menu.items = getMatchedItems(searchMenu, result);
+          return menu.items;
+        });
+      };
+  
+      menu.removeItem = function (index) {
+        menu.items.splice(index, 1);
+    };
 
-        menu.matchedMenuItems = function(searchTerm) {
-            var promise = MenuSearchService.getMatchedMenuItems(searchTerm);
-
-            promise.then(function(items) {
-                if (items && items.length > 0) {
-                    menu.message = '';
-                    menu.found = items;
-                } else {
-                    menu.message = 'Nothing found!';
-                    menu.found = [];
-                }
-            });
-        };
-
-        menu.removeMenuItem = function(itemIndex) {
-            menu.found.splice(itemIndex, 1);
+    function getMatchedItems(searchMenu, result) {
+      let resultItems = [];
+      if (!searchMenu) {
+        return resultItems;
+      }
+      for (let item in result.data) {
+        let items = result.data[item]['menu_items'];
+        for (let i = 0; i < items.length; i++) {
+          if (items[i].description.toLowerCase().indexOf(searchMenu.toLowerCase()) !== -1) {
+            resultItems.push(items[i]);
+          }
         }
+      }
+      return resultItems;
     }
-
-    MenuSearchService.$inject = ['$http', 'ApiBasePath'];
-
-    function MenuSearchService($http, ApiBasePath) {
-        var service = this;
-
-        service.getMatchedMenuItems = function(searchTerm) {
-            return $http({
-                method: "GET",
-                url: (ApiBasePath + "/menu_items.json")
-            }).then(function(response) {
-                var foundItems = [];
-
-                for (var i = 0; i < response.data['menu_items'].length; i++) {
-                    if (searchTerm.length > 0 && response.data['menu_items'][i]['description'].toLowerCase().indexOf(searchTerm) !== -1) {
-                        foundItems.push(response.data['menu_items'][i]);
-                    }
-                }
-
-                return foundItems;
-            });
-        };
-    }
+  }
 })();
